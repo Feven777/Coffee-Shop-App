@@ -49,8 +49,6 @@ The **Coffee Shop App** is a mobile-first application designed to simplify coffe
 - Notify users when their order is **ready for pickup**.
 - Alert admins of **new orders** in real time.
 
-### 💳 Payment Integration (Optional for Development)
-- Simulated payment gateway for transaction handling.
 
 ### 🌍 Offline Mode
 - Enable menu browsing without an internet connection.
