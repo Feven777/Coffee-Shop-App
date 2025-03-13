@@ -40,11 +40,11 @@ The **Coffee Shop App** System is a local application designed to help coffee sh
 ### 5. Local Database & REST API (No Hosting Required)
 
 - Backend API built using **Node.js + Express/NestJS**.
-- **Database runs locally** (SQLite/PostgreSQL/MySQL).
+- **Database runs locally** .
 - RESTful API with endpoints for inventory, employees, and sales.
 
 ### 6. Testing (Unit, Integration, & UI Tests)
 
 - **Unit tests** for backend logic (Jest).
 - **Integration tests** for API endpoints (Supertest).
-- **End-to-end tests** using Cypress/Playwright.
+- **End-to-end tests** .
