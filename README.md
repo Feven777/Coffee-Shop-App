@@ -1,62 +1,50 @@
-|Name| ID |
-| -------- | -------- |
-| Eyerusalem Moges |  UGR/8447/15 | 
-| Bitanya Aleme| UGR/3502/15 | 
+| Name              | ID          |
+| ----------------- | ----------- |
+| Eyerusalem Moges  | UGR/8447/15 |
+| Bitanya Aleme     | UGR/3502/15 |
 | Nuhamin Emnebered | UGR/5628/15 |
-|Feven Hailu | UGR/5607/15
-|Tsion Getaneh | UGR/5106/15 |
+| Feven Hailu       | UGR/5607/15 |
+| Tsion Getaneh     | UGR/5106/15 |
 
-#  Coffee Shop App
+# Coffee Shop App
 
-##  Project Overview
-The **Coffee Shop App** is a mobile-first application designed to simplify coffee ordering, menu management, and user authentication. This document outlines the core features, technologies, and setup instructions to guide the development process from inception.
+## Project Overview
 
----
-
-## Objectives
-- Develop a **mobile application** for ordering coffee.
-- Implement **authentication & authorization** for customers and admins.
-- Enable **menu management** and **order processing** via a locally hosted backend.
-- Ensure a seamless **user experience** with an intuitive UI.
-- Provide **comprehensive testing** for reliability.
+The **Coffee Shop App ** System is a local application designed to help coffee shop owners and managers efficiently handle daily operations. It provides features for inventory tracking, employee shift management, and other essential tasks to streamline business processes. The system is built with a REST API that runs locally, ensuring data security and control. No cloud hosting or Firebase/Firestore is used for authentication or storage.
 
 ---
 
-##  Key Features
-###  Authentication & Authorization
-- **User Registration & Login** using JWT authentication.
-- **Role-Based Access Control (RBAC)** (Customers & Admins).
-- **Secure Password Storage** with hashing and salting.
-- **Delete Account**: Allow users to delete their account permanently.
+## Features
 
-###  Menu Management (Admin Feature)
-- **Create**: Add new coffee items.
-- **Read**: View available coffee items.
-- **Update**: Modify coffee item details (name, price, description, availability).
-- **Delete**: Remove items from the menu.
+### 1. User Authentication & Authorization
 
-###  Order Management (User Feature)
-- **Create**: Place new coffee orders.
-- **Read**: View order history and status.
-- **Update**: Modify orders before confirmation.
-- **Delete**: Cancel orders before preparation starts.
+- Role-based authentication (**Admin, Manager, Employee**).
+- Secure password hashing using **bcrypt**.
+- Login/logout functionality using **JWT tokens**.
 
-###  Dashboard & Analytics
-- Track **total sales**, **most ordered items**, and **order trends**.
-- Display **order statuses** (Pending, In Progress, Completed).
+### 2. Inventory Management (CRUD)
 
-###  Notifications
-- Notify users when their order is **ready for pickup**.
-- Alert admins of **new orders** in real time.
+- Add, update, delete, and track stock items (e.g., coffee beans, milk, cups).
+- Low-stock alerts to prevent shortages.
 
+### 3. Employee Shift Management (CRUD)
 
-###  Offline Mode
-- Enable menu browsing without an internet connection.
+- Assign employees to specific shifts (morning/evening).
+- View, update, and delete shift schedules.
 
+### 4. Sales & Transactions Tracking
 
+- Record daily sales data and transaction history.
+- Generate reports on revenue and popular items.
 
+### 5. Local Database & REST API (No Hosting Required)
 
+- Backend API built using **Node.js + Express/NestJS**.
+- **Database runs locally** (SQLite/PostgreSQL/MySQL).
+- RESTful API with endpoints for inventory, employees, and sales.
 
+### 6. Testing (Unit, Integration, & UI Tests)
 
-
-
+- **Unit tests** for backend logic (Jest).
+- **Integration tests** for API endpoints (Supertest).
+- **End-to-end tests** using Cypress/Playwright.
