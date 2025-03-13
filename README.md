@@ -61,11 +61,11 @@ The **Coffee Shop App** is a mobile-first application designed to simplify coffe
 
 ### **Backend**
 - **Node.js (Express)** 
-- **SQLite/PostgreSQL**
+- **SQLite**
 - **JWT Authentication**
 
 ### **Testing**
-- **JUnit / Mockito (Kotlin)**
+- **JUnit and Mockito (Kotlin)**
 - **Postman for API Testing**
 
 ---
