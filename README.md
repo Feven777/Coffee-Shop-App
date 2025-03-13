@@ -10,7 +10,7 @@
 
 ## Project Overview
 
-The **Coffee Shop App ** System is a local application designed to help coffee shop owners and managers efficiently handle daily operations. It provides features for inventory tracking, employee shift management, and other essential tasks to streamline business processes. The system is built with a REST API that runs locally, ensuring data security and control. No cloud hosting or Firebase/Firestore is used for authentication or storage.
+The **Coffee Shop App** System is a local application designed to help coffee shop owners and managers efficiently handle daily operations. It provides features for inventory tracking, employee shift management, and other essential tasks to streamline business processes. The system is built with a REST API that runs locally, ensuring data security and control. No cloud hosting or Firebase/Firestore is used for authentication or storage.
 
 ---
 
