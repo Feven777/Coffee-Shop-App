@@ -121,10 +121,7 @@ The **Coffee Shop App** is a mobile-first application designed to simplify coffe
 
 ---
 
-## 📌 License
-This project is licensed under the **MIT License**.
 
----
 
 
 
