@@ -65,8 +65,15 @@ fun RegistrationScreen(navController: NavController) {
     val context = LocalContext.current
 
     StyledBackground {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("Register to Get Started", style = MaterialTheme.typography.titleLarge, color = Color.Black)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth().padding(24.dp)
+        ) {
+            Text(
+                "Register to Get Started",
+                style = MaterialTheme.typography.titleLarge,
+                color = Color.Black
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -76,14 +83,22 @@ fun RegistrationScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            StyledButton("Register") { handleRegistration(fullName, email, password, context, navController) }
+            StyledButton("Register") {
+                if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(context, "All fields must be filled!", Toast.LENGTH_SHORT).show()
+                } else {
+                    handleRegistration(fullName, email, password, context, navController)
+                }
+            }
 
-            TextButton(onClick = { navController.navigate("login") { popUpTo("registration") { inclusive = true } } }) {
+            TextButton(onClick = { navController.navigate("login") }) {
                 Text("Already have an account? Login", color = Color.Black)
             }
+
         }
     }
 }
+
 
 // Styled Login Screen
 @Composable
@@ -107,6 +122,9 @@ fun LoginScreen(navController: NavController) {
 
             TextButton(onClick = { navController.navigate("forgot_password") { popUpTo("login") { inclusive = true } } }) {
                 Text("Forgot Password?", color = Color.Black)
+            }
+            TextButton(onClick = { navController.popBackStack() }) {
+                Text("Go Back to Register", color = Color.Black)
             }
         }
     }
@@ -132,6 +150,9 @@ fun ForgotPasswordScreen(navController: NavController) {
 
             TextButton(onClick = { navController.navigate("login") { popUpTo("forgot_password") { inclusive = true } } }) {
                 Text("Go Back to Login", color = Color.Black)
+            }
+            TextButton(onClick = { navController.popBackStack() }) {
+                Text("Go Back to register", color = Color.Black)
             }
         }
     }
