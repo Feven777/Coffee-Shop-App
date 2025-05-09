@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.shopApp"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -39,26 +39,27 @@ android {
     }
 }
 dependencies {
-    implementation ("androidx.core:core-ktx:1.12.0")
-    implementation ("androidx.activity:activity-compose:1.8.2")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation ("androidx.compose.material3:material3:1.1.2")
+    implementation (libs.androidx.core.ktx.v1120)
+    implementation (libs.androidx.activity.compose.v182)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    implementation (libs.material3)
     // Compose BOM ensures version compatibility across Compose dependencies
-    implementation (platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation ("androidx.compose.ui:ui:1.5.4")
+    implementation (platform(libs.androidx.compose.bom.v20230800))
+    implementation (libs.ui)
 
-    implementation ("androidx.navigation:navigation-compose:2.7.6")
-    implementation ("androidx.compose.material3:material3:1.1.2")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation (libs.androidx.navigation.compose)
+    implementation (libs.androidx.material3.v112)
+    implementation (libs.kotlinx.coroutines.core)
 
-    implementation ("androidx.compose.ui:ui")
-    implementation ("androidx.compose.ui:ui-graphics")
-    implementation ("androidx.compose.ui:ui-tooling-preview")
-    implementation ("androidx.compose.material3:material3:1.1.2")
-    implementation ("androidx.navigation:navigation-compose:2.7.7")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation (libs.androidx.compose.ui.ui)
+    implementation (libs.ui.graphics)
+    implementation (libs.ui.tooling.preview)
+    implementation (libs.material3)
+    implementation (libs.androidx.navigation.compose.v277)
+    implementation (libs.androidx.lifecycle.viewmodel.compose.v262)
+    implementation(libs.androidx.material3.android)
 
     // Debug dependencies
-    debugImplementation ("androidx.compose.ui:ui-tooling")
-    debugImplementation ("androidx.compose.ui:ui-test-manifest")
+    debugImplementation (libs.ui.tooling)
+    debugImplementation (libs.ui.test.manifest)
 }

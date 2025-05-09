@@ -3,38 +3,38 @@ package com.example.shopapp.presentation.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.shopapp.presentation.theme.Theme
-import com.example.shopapp.presentation.viewmodels.ForgotPasswordScreen
-import com.example.shopapp.presentation.viewmodels.LoginScreen
-import com.example.shopapp.presentation.viewmodels.RegistrationScreen
-import com.example.shopapp.presentation.viewmodels.HomeScreen
+import com.example.shopapp.presentation.activities.SalesScreen
+import com.example.coffeeshopapp.presentation.viewmodel.SalesViewModel
+import com.example.shopapp.presentation.theme.CoffeeTheme
 
 class MainActivity : ComponentActivity() {
+    private val salesViewModel: SalesViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Theme {
-                ShopAppNavigation()
-            }
+            AppContent(
+                viewModel = salesViewModel,
+                onNavigateBack = { finish() }
+            )
         }
     }
 }
 
 @Composable
-fun ShopAppNavigation() {
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = "login"
-    ) {
-        composable("login") { LoginScreen(navController) }
-        composable("register") { RegistrationScreen(navController) }
-        composable("forgot_password") { ForgotPasswordScreen(navController) }
-        composable("home") { HomeScreen(navController) }
+fun AppContent(
+    viewModel: SalesViewModel,
+    onNavigateBack: () -> Unit
+) {
+    CoffeeTheme {
+        Surface {
+            SalesScreen(
+                viewModel = viewModel,
+                onNavigateBack = onNavigateBack
+            )
+        }
     }
 }
