@@ -45,6 +45,6 @@ The **Coffee Shop App** System is a local application designed to help coffee sh
 
 ### 6. Testing (Unit, Integration, & UI Tests)
 
-- **Unit tests** for backend logic (Jest).
-- **Integration tests** for API endpoints (Supertest).
-- **End-to-end tests** .
+- **Unit tests** for backend logic (Jest)
+- **Integration tests** for API endpoints (Supertest)
+- **End-to-end tests** 
