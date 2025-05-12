@@ -87,13 +87,25 @@ class MainActivity : ComponentActivity() {
                                 onLogin = { navController.navigate("login") }
                             )
                         }
-
                         composable("login") {
                             LoginScreen(
                                 onLogin = { email, pwd ->
                                     authViewModel.loginUser(email, pwd) {
-                                        navController.navigate("sales") {
-                                            popUpTo("login") { inclusive = true }
+                                        lifecycleScope.launch {
+                                            SettingsDataStore.userRoleFlow(applicationContext)
+                                                .combine(SettingsDataStore.tokenFlow(applicationContext)) { role, token ->
+                                                    role to token
+                                                }
+                                                .collectLatest { (role, token) ->
+                                                    val destination = when {
+                                                        token.isNullOrEmpty() -> "register"  // If token is missing, go to register
+                                                        role?.lowercase() == "admin" -> "dashboard"  // Admin goes to dashboard
+                                                        else -> "sales"  // Employees go to sales
+                                                    }
+                                                    navController.navigate(destination) {
+                                                        popUpTo("login") { inclusive = true }
+                                                    }
+                                                }
                                         }
                                     }
                                 },
