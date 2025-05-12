@@ -7,6 +7,6 @@ data class User(
 )
 
 enum class Role {
-    OWNER,
+    ADMIN,
     MANAGER
 }

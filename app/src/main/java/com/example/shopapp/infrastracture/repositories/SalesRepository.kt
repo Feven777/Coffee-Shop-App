@@ -4,5 +4,5 @@ import com.example.shopapp.application.entities.SalesData
 
 
 interface SalesRepository {
-    suspend fun getSalesData(): SalesData
+    suspend fun getSalesSummary(): SalesData
 }

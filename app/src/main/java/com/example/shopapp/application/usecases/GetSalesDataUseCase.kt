@@ -6,6 +6,6 @@ import com.example.shopapp.infrastracture.repositories.SalesRepository
 // fetch sales data.
 class GetSalesDataUseCase(private val repository: SalesRepository) {
     suspend operator fun invoke(): SalesData {
-        return repository.getSalesData()
+        return repository.getSalesSummary()
     }
 }

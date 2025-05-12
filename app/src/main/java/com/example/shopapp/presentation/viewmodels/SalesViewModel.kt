@@ -21,7 +21,7 @@ class SalesViewModel(application: Application) : AndroidViewModel(application) {
 //    private val repository = SalesRepositoryImpl()
     private val getSalesDataUseCase = GetSalesDataUseCase(repository)
 
-    fun fetchSalesData() {
+    fun fetchSalesSummary() {
         viewModelScope.launch {
             isLoading.value = true
             try {

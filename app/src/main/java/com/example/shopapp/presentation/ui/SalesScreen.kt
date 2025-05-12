@@ -1,29 +1,11 @@
 package com.example.shopapp.presentation.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -43,7 +25,7 @@ fun SalesScreen(
     onNavigateBack: () -> Unit
 ) {
     LaunchedEffect(Unit) {
-        viewModel.fetchSalesData()
+        viewModel.fetchSalesSummary()  // ✅ Ensure it fetches summary data
     }
 
     val salesData = viewModel.salesData.value
@@ -53,13 +35,10 @@ fun SalesScreen(
     Scaffold(
         topBar = {
             MediumTopAppBar(
-                title = { Text("Coffee Abyssinya ", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) },
+                title = { Text("Coffee Abyssinya", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -72,45 +51,33 @@ fun SalesScreen(
             contentAlignment = Alignment.Center
         ) {
             when {
-                isLoading -> CircularProgressIndicator()
+                isLoading -> CircularProgressIndicator()  // ✅ Shows loading animation
                 errorMessage.isNotEmpty() -> Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
-                salesData != null -> SalesContent(data = salesData)
+                salesData != null -> SalesSummaryContent(data = salesData)  // ✅ Show summary content
                 else -> Text("No sales data available.")
             }
         }
     }
 }
 
-
 @Composable
-fun SalesContent(data: SalesData) {
+fun SalesSummaryContent(data: SalesData) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
-        Text(
-            text = "Sales Overview",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-        )
+        Text(text = "Sales Overview", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 RevenueCard("Daily Revenue", data.dailyRevenue, data.dailyRevenueTrend, Modifier.weight(1f))
                 RevenueCard("Weekly Revenue", data.weeklyRevenue, data.weeklyRevenueTrend, Modifier.weight(1f))
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 RevenueCard("Monthly Revenue", data.monthlyRevenue, data.monthlyRevenueTrend, Modifier.weight(1f))
                 RevenueCard("Average Order Value", data.averageOrderValue, data.averageOrderValueTrend, Modifier.weight(1f))
             }
@@ -118,12 +85,8 @@ fun SalesContent(data: SalesData) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // 🔹 "Top Selling Items" section remains visually consistent
         Text(text = "Top Selling Items", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(data.topSellingItems) { item ->
                 TopSellingItemRow(item = item)
                 HorizontalDivider()
@@ -132,30 +95,24 @@ fun SalesContent(data: SalesData) {
     }
 }
 
-// 📊 Revenue Card styled exactly like the image
 @Composable
 fun RevenueCard(label: String, amount: Double, trend: Double, modifier: Modifier) {
     Card(
         modifier = modifier.height(120.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        shape = MaterialTheme.shapes.medium // Rounded corners
+        shape = MaterialTheme.shapes.medium
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.Center
         ) {
-
             Text(text = label, style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                text = "${amount} Br",
-                style = MaterialTheme.typography.headlineLarge,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Text(text = "${amount} Br", style = MaterialTheme.typography.headlineLarge, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(4.dp))
+
             Text(
                 text = "${(trend * 100).toInt()}% " + if (trend >= 0) "increase" else "decrease",
                 style = MaterialTheme.typography.bodySmall,
@@ -164,7 +121,6 @@ fun RevenueCard(label: String, amount: Double, trend: Double, modifier: Modifier
         }
     }
 }
-
 
 @Composable
 fun TopSellingItemRow(item: TopSellingItem) {

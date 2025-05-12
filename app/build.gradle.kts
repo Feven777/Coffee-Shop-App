@@ -41,6 +41,8 @@ android {
     }
 }
 dependencies {
+    implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
     coreLibraryDesugaring (libs.desugar.jdk.libs)
     implementation (libs.androidx.core.ktx.v1120)
     implementation (libs.androidx.activity.compose.v182)
