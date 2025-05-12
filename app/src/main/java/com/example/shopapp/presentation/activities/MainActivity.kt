@@ -92,13 +92,13 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(
                                 onLogin = { email, pwd ->
                                     authViewModel.loginUser(email, pwd) {
-                                        navController.navigate("dashboard") {
+                                        navController.navigate("sales") {
                                             popUpTo("login") { inclusive = true }
                                         }
                                     }
                                 },
-                                isLoading = authViewModel.isLoading.value,
-                                errorMessage = authViewModel.errorMessage.value
+                                isLoading = authViewModel.isLoading.value,  // ✅ Pass `isLoading`
+                                errorMessage = authViewModel.errorMessage.value  // ✅ Pass `errorMessage`
                             )
                         }
 
@@ -115,7 +115,10 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable("sales") {
-                            SalesScreen(viewModel = salesViewModel, onNavigateBack = { navController.popBackStack() })
+                            SalesScreen(
+                                viewModel = salesViewModel,  // ✅ Pass ViewModel
+                                onNavigateBack = { navController.popBackStack() }
+                            )
                         }
                     }
                 }
