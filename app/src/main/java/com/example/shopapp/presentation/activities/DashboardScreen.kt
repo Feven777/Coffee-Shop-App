@@ -1,6 +1,8 @@
+// DashboardScreen.kt
 package com.example.shopapp.presentation.activities
-
+import androidx. compose. animation. core. animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,21 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.navigation.NavController
-import com.example.shopApp.R
+import com.example.shopapp.R
 import com.example.shopapp.presentation.theme.DashTheme
-import com.example.shopapp.presentation.viewmodels.DashboardViewModel
-
+import androidx. compose. ui. graphics. painter. Painter
+import androidx. compose. animation. core. tween
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(
-    navController: NavController,
-    viewModel: DashboardViewModel = viewModel()
-) {
+fun DashboardScreen(navController: NavController) {
     DashTheme {
         Box(Modifier.fillMaxSize()) {
             Image(
@@ -78,22 +73,22 @@ fun DashboardScreen(
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         AnimatedFooterButton(
-                            painterResource(R.drawable.ic_inventory),
-                            "Inventory",
-                            { navController.navigate("inventory") },
-                            Modifier.weight(1f)
+                            icon = painterResource(R.drawable.ic_inventory),
+                            label = "Inventory",
+                            onClick = { navController.navigate("inventory") },
+                            modifier = Modifier.weight(1f)
                         )
                         AnimatedFooterButton(
-                            painterResource(R.drawable.ic_shift),
-                            "Shifts",
-                            { navController.navigate("shifts") },
-                            Modifier.weight(1f)
+                            icon = painterResource(R.drawable.ic_shift),
+                            label = "Shifts",
+                            onClick = { navController.navigate("shifts") },
+                            modifier = Modifier.weight(1f)
                         )
                         AnimatedFooterButton(
-                            painterResource(R.drawable.ic_sales),
-                            "Sales",
-                            { navController.navigate("sales") },
-                            Modifier.weight(1f)
+                            icon = painterResource(R.drawable.ic_sales),
+                            label = "Sales",
+                            onClick = { navController.navigate("sales") },
+                            modifier = Modifier.weight(1f)
                         )
                     }
                 }
@@ -105,24 +100,16 @@ fun DashboardScreen(
 @Composable
 fun AnimatedStatCard(title: String, value: String) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(6.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 8.dp)
-            .height(100.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.9f)),
+        elevation = CardDefaults.cardElevation(6.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(title, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color.Black)
-            Spacer(Modifier.height(8.dp))
-            Text(value, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color(0xFF6D4C41))
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = title, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = value, fontSize = 24.sp, color = Color(0xFF8D6E63))
         }
     }
 }
@@ -136,14 +123,13 @@ fun AnimatedFooterButton(
 ) {
     var pressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
-        if (pressed) 1.1f else 1f,
-        tween(200)
+        targetValue = if (pressed) 0.95f else 1f,
+        animationSpec = tween(durationMillis = 200), label = "scale"
     )
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .padding(6.dp)
+            .padding(8.dp)
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -154,24 +140,10 @@ fun AnimatedFooterButton(
                         onClick()
                     }
                 )
-            }
-            .height(100.dp)
+            },
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Surface(
-            shape = RoundedCornerShape(14.dp),
-            color = Color(0xFF8D6E63),
-            shadowElevation = if (pressed) 8.dp else 2.dp,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column(
-                Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(icon, label, tint = Color.White, modifier = Modifier.size(28.dp))
-                Spacer(Modifier.height(6.dp))
-                Text(label, color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-            }
-        }
+        Image(painter = icon, contentDescription = label, modifier = Modifier.size(48.dp))
+        Text(text = label, fontSize = 14.sp, fontWeight = FontWeight.Medium)
     }
 }

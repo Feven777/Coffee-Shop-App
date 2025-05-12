@@ -1,3 +1,4 @@
+// MainActivity.kt
 package com.example.shopapp.presentation.activities
 
 import android.os.Bundle
@@ -7,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.shopapp.domain.entities.SalesData
-import com.example.shopapp.domain.entities.TopSellingItem
-import com.example.shopapp.presentation.activities.DashboardScreen
 import com.example.shopapp.presentation.screens.InventoryScreen
+import com.example.shopapp.presentation.activities.DashboardScreen
 import com.example.shopapp.presentation.screens.ShiftsScreen
 import com.example.shopapp.presentation.screens.SalesScreen
+import com.example.shopapp.domain.entities.SalesData
+import com.example.shopapp.domain.entities.TopSellingItem
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +26,6 @@ class MainActivity : ComponentActivity() {
 fun ShopAppNavigation() {
     val navController = rememberNavController()
 
-    // sample SalesData inline
     val sampleSalesData = SalesData(
         dailyRevenue = 4800.0,
         dailyRevenueTrend = 0.08,
@@ -42,11 +42,17 @@ fun ShopAppNavigation() {
         )
     )
 
-    NavHost(navController, startDestination = "dashboard") {
-        composable("dashboard") { DashboardScreen(navController) }
-        composable("inventory") { InventoryScreen() }
-        composable("shifts")    { ShiftsScreen() }
-        composable("sales")     {
+    NavHost(navController = navController, startDestination = "dashboard") {
+        composable("dashboard") {
+            DashboardScreen(navController)
+        }
+        composable("inventory") {
+            InventoryScreen(navController)
+        }
+        composable("shifts") {
+            ShiftsScreen(navController)
+        }
+        composable("sales") {
             SalesScreen(
                 salesData = sampleSalesData,
                 onNavigateBack = { navController.popBackStack() }
