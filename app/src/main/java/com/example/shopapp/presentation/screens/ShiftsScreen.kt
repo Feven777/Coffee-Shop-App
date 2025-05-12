@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.shopapp.R
+import com.example.shopApp.R
 import com.example.shopapp.infrasturacture.dtos.ShiftDto
 import com.example.shopapp.presentation.viewmodels.ShiftViewModel
 
@@ -61,7 +63,7 @@ fun ShiftsScreen(navController: androidx.navigation.NavController) {
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
@@ -102,7 +104,7 @@ fun ShiftsScreen(navController: androidx.navigation.NavController) {
                 // View Shifts Button
                 ShiftActionButton(
                     text = if (showShifts) "Hide Shifts" else "View Shifts",
-                    icon = Icons.Default.List,
+                    icon = Icons.AutoMirrored.Filled.List,
                     onClick = { showShifts = !showShifts }
                 )
 

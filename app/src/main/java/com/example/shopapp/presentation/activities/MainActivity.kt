@@ -1,96 +1,150 @@
 package com.example.shopapp.presentation.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.shopapp.domain.entities.SalesData
-import com.example.shopapp.domain.entities.TopSellingItem
-import com.example.shopapp.presentation.screens.InventoryScreen
-import com.example.shopapp.presentation.screens.SalesScreen
-import com.example.shopapp.presentation.screens.ShiftsScreen
+import com.example.shopapp.infrastracture.datasources.local.SettingsDataStore
+import com.example.shopapp.presentation.theme.CoffeeTheme
+import com.example.shopapp.presentation.ui.LoginScreen
 import com.example.shopapp.presentation.ui.RegisterScreen
-import com.example.shopapp.presentation.screens.LoginScreen// Corrected import here
+import com.example.shopapp.presentation.ui.SalesScreen
+import com.example.shopapp.presentation.viewmodels.AuthViewModel
+import com.example.shopapp.presentation.viewmodels.SalesViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
+import com.example.shopapp.presentation.activities.DashboardScreen
+import com.example.shopapp.presentation.screens.InventoryScreen
+import com.example.shopapp.presentation.screens.ShiftsScreen
 
 class MainActivity : ComponentActivity() {
+    private val authViewModel by lazy { AuthViewModel(application) }
+    private val salesViewModel by lazy { SalesViewModel(application) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            SettingsDataStore.clearToken(applicationContext)
+            SettingsDataStore.clearUserRole(applicationContext)
+            Log.d("MainActivity", "❌ Token & Role cleared on restart")
+        }
+
         setContent {
-            ShopAppNavigation()
-        }
-    }
-}
+            CoffeeTheme {
+                val navController = rememberNavController()
+                var startDest by remember { mutableStateOf<String?>(null) }
 
-@Composable
-fun ShopAppNavigation() {
-    val navController = rememberNavController()
-    var isAuthenticated by remember { mutableStateOf(false) }
+                LaunchedEffect(Unit) {
+                    try {
+                        SettingsDataStore.userRoleFlow(applicationContext)
+                            .combine(SettingsDataStore.tokenFlow(applicationContext)) { role, token ->
+                                role to token
+                            }
+                            .collectLatest { (role, token) ->
+                                Log.d("MainActivity", "Fetched role: $role, token: $token") // ✅ Debugging log
 
-    val sampleSalesData = SalesData(
-        dailyRevenue = 4800.0,
-        dailyRevenueTrend = 0.08,
-        weeklyRevenue = 300240.0,
-        weeklyRevenueTrend = 0.12,
-        monthlyRevenue = 12480.0,
-        monthlyRevenueTrend = -0.03,
-        averageOrderValue = 8.5,
-        averageOrderValueTrend = 0.05,
-        topSellingItems = listOf(
-            TopSellingItem("Cappuccino", 180, 540.0, 0.05),
-            TopSellingItem("Latte", 160, 480.0, -0.03),
-            TopSellingItem("Espresso", 120, 300.0, 0.06),
-        )
-    )
-
-    NavHost(navController = navController, startDestination = if (isAuthenticated) "dashboard" else "login") {
-        // Login Screen
-        composable("login") {
-            val onNavigateToRegister = null
-            LoginScreen(navController = navController, onLoginSuccess = {
-                    isAuthenticated = true
-                    navController.navigate("dashboard") {
-                        popUpTo("login") { inclusive = true }
-                    }
-                }, onNavigateToRegister = onNavigateToRegister)
-        }
-
-        // Register Screen
-        composable("register") {
-            RegisterScreen(
-                navController = navController,
-                onRegisterSuccess = {
-                    isAuthenticated = true
-                    navController.navigate("dashboard") {
-                        popUpTo("register") { inclusive = true }
+                                startDest = when {
+                                    token.isNullOrEmpty() -> "register" // ✅ If token is missing, go to register
+                                    role?.lowercase() == "admin" -> "dashboard" // ✅ Admin goes to dashboard
+                                    else -> "sales" // ✅ Employees go to sales
+                                }
+                            }
+                    } catch (e: Exception) {
+                        Log.e("MainActivity", "Error fetching token/role: ${e.message}")
+                        startDest = "register" // ✅ Ensure app doesn't get stuck in loading
                     }
                 }
-            )
-        }
 
-        // Dashboard Screen
-        composable("dashboard") {
-            DashboardScreen(navController)
-        }
+                if (startDest == null) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    NavHost(navController = navController, startDestination = startDest!!) {
+                        composable("register") {
+                            RegisterScreen(
+                                onRegister = { name, email, pwd ->
+                                    authViewModel.registerUser(name, email, pwd) {
+                                        navController.navigate("login") {
+                                            popUpTo("register") { inclusive = true }
+                                        }
+                                    }
+                                },
+                                isLoading = authViewModel.isLoading.value,
+                                errorMessage = authViewModel.errorMessage.value,
+                                onLogin = { navController.navigate("login") }
+                            )
+                        }
+                        composable("login") {
+                            LoginScreen(
+                                onLogin = { email, pwd ->
+                                    authViewModel.loginUser(email, pwd) {
+                                        lifecycleScope.launch {
+                                            SettingsDataStore.userRoleFlow(applicationContext)
+                                                .combine(SettingsDataStore.tokenFlow(applicationContext)) { role, token ->
+                                                    role to token
+                                                }
+                                                .collectLatest { (role, token) ->
+                                                    val destination = when {
+                                                        token.isNullOrEmpty() -> "register"  // If token is missing, go to register
+                                                        role?.lowercase() == "admin" -> "dashboard"  // Admin goes to dashboard
+                                                        else -> "sales"  // Employees go to sales
+                                                    }
+                                                    navController.navigate(destination) {
+                                                        popUpTo("login") { inclusive = true }
+                                                    }
+                                                }
+                                        }
+                                    }
+                                },
+                                isLoading = authViewModel.isLoading.value,  // ✅ Pass `isLoading`
+                                errorMessage = authViewModel.errorMessage.value  // ✅ Pass `errorMessage`
+                            )
+                        }
 
-        // Inventory Screen
-        composable("inventory") {
-            InventoryScreen(navController)
-        }
+                        composable("dashboard") {
+                            DashboardScreen(navController)
+                        }
 
-        // Shifts Screen
-        composable("shifts") {
-            ShiftsScreen(navController)
-        }
+                        composable("inventory") {
+                            InventoryScreen(navController)
+                        }
 
-        // Sales Screen
-        composable("sales") {
-            SalesScreen(
-                salesData = sampleSalesData,
-                onNavigateBack = { navController.popBackStack() }
-            )
+                        composable("shifts") {
+                            ShiftsScreen(navController)
+                        }
+
+                        composable("sales") {
+                            SalesScreen(
+                                viewModel = salesViewModel,  // ✅ Pass ViewModel
+                                onNavigateBack = { navController.popBackStack() }
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
+
+    // Function to determine the starting destination based on user role
+    private fun getStartDestination(token: String, role: String?): String {
+        return if (token.isNotEmpty()) {
+            if (role?.lowercase() == "admin") "dashboard" else "sales" // ✅ Explicitly check for "admin"
+        } else {
+            "register"
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-// DashboardScreen.kt
+
 package com.example.shopapp.presentation.activities
 import androidx. compose. animation. core. animateFloatAsState
 import androidx.compose.foundation.Image
@@ -20,13 +20,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.shopapp.R
 import com.example.shopapp.presentation.theme.DashTheme
 import androidx. compose. ui. graphics. painter. Painter
 import androidx. compose. animation. core. tween
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.shopApp.R
+import com.example.shopapp.presentation.viewmodels.AuthViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(navController: NavController) {
+    val authViewModel: AuthViewModel = viewModel()
+
     DashTheme {
         Box(Modifier.fillMaxSize()) {
             Image(
@@ -91,6 +96,25 @@ fun DashboardScreen(navController: NavController) {
                             modifier = Modifier.weight(1f)
                         )
                     }
+                    Button(
+                        onClick = {
+                            authViewModel.logoutUser {
+                                navController.navigate("login") // Navigate to login screen after logout
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF8D6E63),
+                            contentColor = Color.White // White text
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                    ) {
+                        Text(text = "Logout", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    }
+
                 }
             }
         }
@@ -116,15 +140,16 @@ fun AnimatedStatCard(title: String, value: String) {
 
 @Composable
 fun AnimatedFooterButton(
-    icon: Painter,
     label: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    icon: Painter? = null // Make icon optional
 ) {
     var pressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
         targetValue = if (pressed) 0.95f else 1f,
-        animationSpec = tween(durationMillis = 200), label = "scale"
+        animationSpec = tween(durationMillis = 200),
+        label = "scale"
     )
 
     Column(
@@ -143,7 +168,9 @@ fun AnimatedFooterButton(
             },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = icon, contentDescription = label, modifier = Modifier.size(48.dp))
+        icon?.let {
+            Image(painter = it, contentDescription = label, modifier = Modifier.size(48.dp))
+        }
         Text(text = label, fontSize = 14.sp, fontWeight = FontWeight.Medium)
     }
 }
