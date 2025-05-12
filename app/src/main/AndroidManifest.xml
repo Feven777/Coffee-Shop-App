@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.shopApp">
-
+    >
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,10 +15,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopApp"
         tools:targetApi="31">
+
+        <!-- RegistrationActivity: new users start here -->
+        <activity
+            android:name="com.example.shopapp.presentation.activities.RegistrationActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ShopApp" />
+        <!-- LoginActivity: after registering, users log in -->
+        <activity
+            android:name="com.example.shopapp.presentation.activities.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ShopApp" />
+        <!-- MainActivity -->
         <activity
             android:name="com.example.shopapp.presentation.activities.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ShopApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

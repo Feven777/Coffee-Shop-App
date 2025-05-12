@@ -1,4 +1,4 @@
-package com.example.shopapp.presentation.activities
+package com.example.shopapp.presentation.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.shopapp.application.entities.SalesData
 import com.example.shopapp.application.entities.TopSellingItem
-import com.example.coffeeshopapp.presentation.viewmodel.SalesViewModel
+import com.example.shopapp.presentation.viewmodels.SalesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

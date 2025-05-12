@@ -1,10 +1,13 @@
-package com.example.coffeeshopapp.data.repository
+package com.example.shopapp.infrastracture.repositories
 
-import com.example.shopapp.infrastracture.datasources.remote.SalesApi
+import android.content.Context
 import com.example.shopapp.application.entities.SalesData
+import com.example.shopapp.infrastracture.datasources.remote.RetrofitClient
+import com.example.shopapp.infrastracture.datasources.remote.SalesService
 
-class SalesRepositoryImpl : SalesRepository {
+class SalesRepositoryImpl(private val context: Context) : SalesRepository {
     override suspend fun getSalesData(): SalesData {
-        return SalesApi.fetchSalesData()
+        val salesService = RetrofitClient.create(SalesService::class.java, context)
+        return salesService.getSalesSummary()
     }
 }

@@ -28,6 +28,8 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -39,11 +41,17 @@ android {
     }
 }
 dependencies {
+    coreLibraryDesugaring (libs.desugar.jdk.libs)
     implementation (libs.androidx.core.ktx.v1120)
     implementation (libs.androidx.activity.compose.v182)
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.material3)
-    // Compose BOM ensures version compatibility across Compose dependencies
+
+    implementation (libs.androidx.datastore.preferences)
+    implementation (libs.retrofit)
+    implementation (libs.converter.moshi)
+    implementation (libs.logging.interceptor)
+
     implementation (platform(libs.androidx.compose.bom.v20230800))
     implementation (libs.ui)
 
@@ -58,6 +66,7 @@ dependencies {
     implementation (libs.androidx.navigation.compose.v277)
     implementation (libs.androidx.lifecycle.viewmodel.compose.v262)
     implementation(libs.androidx.material3.android)
+    implementation(libs.ads.mobile.sdk)
 
     // Debug dependencies
     debugImplementation (libs.ui.tooling)

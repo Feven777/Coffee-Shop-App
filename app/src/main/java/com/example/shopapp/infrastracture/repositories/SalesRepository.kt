@@ -1,4 +1,4 @@
-package com.example.coffeeshopapp.data.repository
+package com.example.shopapp.infrastracture.repositories
 
 import com.example.shopapp.application.entities.SalesData
 
