@@ -53,6 +53,10 @@ fun StyledBackground(content: @Composable ColumnScope.() -> Unit) {
     }
 }
 
+private fun BoxScope.content() {
+    TODO("Not yet implemented")
+}
+
 // Custom curved shape for content box
 class CurvedShape : androidx.compose.ui.graphics.Shape {
     override fun createOutline(

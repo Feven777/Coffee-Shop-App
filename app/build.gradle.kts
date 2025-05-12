@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.shopApp"
+    namespace = "com.example.shopapp"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.shopApp"
+        applicationId = "com.example.shopapp"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -39,6 +39,9 @@ android {
     }
 }
 dependencies {
+    implementation("androidx.compose.material3:material3:1.2.0")
+
+
     implementation ("androidx.core:core-ktx:1.12.0")
     implementation ("androidx.activity:activity-compose:1.8.2")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
@@ -46,6 +49,15 @@ dependencies {
     // Compose BOM ensures version compatibility across Compose dependencies
     implementation (platform("androidx.compose:compose-bom:2023.08.00"))
     implementation ("androidx.compose.ui:ui:1.5.4")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+// Retrofit
+    // Coroutines support
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // or Moshi if you're using it
 
     implementation ("androidx.navigation:navigation-compose:2.7.6")
     implementation ("androidx.compose.material3:material3:1.1.2")
