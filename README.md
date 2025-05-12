@@ -18,7 +18,7 @@ The **Coffee Shop App** System is a local application designed to help coffee sh
 
 ### 1. User Authentication & Authorization
 
-- Role-based authentication (**Admin, Manager, Employee**).
+- Role-based authentication (**Admin, Employee**).
 - Secure password hashing using **bcrypt**.
 - Login/logout functionality using **JWT tokens**.
 
