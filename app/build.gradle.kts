@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
 }
 
 android {
@@ -41,6 +42,10 @@ android {
     }
 }
 dependencies {
+    implementation (libs.androidx.core.ktx.v190)
+    implementation (libs.androidx.appcompat)
+    implementation (libs.material)
+
     implementation(libs.androidx.monitor)
     implementation(libs.androidx.junit.ktx)
     coreLibraryDesugaring (libs.desugar.jdk.libs)

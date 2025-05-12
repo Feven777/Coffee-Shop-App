@@ -107,11 +107,11 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable("inventory") {
-                            InventoryScreen()
+                            InventoryScreen(navController)
                         }
 
                         composable("shifts") {
-                            ShiftsScreen()
+                            ShiftsScreen(navController)
                         }
 
                         composable("sales") {
