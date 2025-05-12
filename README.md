@@ -43,8 +43,4 @@ The **Coffee Shop App** System is a local application designed to help coffee sh
 - **Database runs locally** .
 - RESTful API with endpoints for inventory, employees, and sales.
 
-### 6. Testing (Unit, Integration, & UI Tests)
 
-- **Unit tests** for backend logic (Jest)
-- **Integration tests** for API endpoints (Supertest)
-- **End-to-end tests** 
