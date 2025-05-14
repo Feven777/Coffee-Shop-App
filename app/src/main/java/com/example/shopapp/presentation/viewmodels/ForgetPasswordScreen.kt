@@ -23,7 +23,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(24.dp)
         ) {
-            // Title
+            // Titles
             Text(
                 text = "Reset Your Password",
                 style = MaterialTheme.typography.titleLarge,
@@ -42,7 +42,7 @@ fun ForgotPasswordScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Send Reset Link Button
+            // Send Reset Link Button Space
             StyledButton(
                 text = "Send Reset Link",
                 onClick = { viewModel.onForgotPassword() }
